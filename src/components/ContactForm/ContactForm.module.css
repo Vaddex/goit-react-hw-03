@@ -1,3 +1,6 @@
 .container {
-    border: 2px sold blue;
+    border: 2px solid black;
+    border-radius: 20px;
+    height: 260px;
+    width: 420px;
 }

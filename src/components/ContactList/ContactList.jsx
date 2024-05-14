@@ -1,7 +1,15 @@
 import css from './ContactList.module.css';
 
+import Contact from '../Contact/Contact';
+
 const ContactList = () => {
-    return <div className={css.container}>ContactList</div>;
+    return (
+        <ul className={css.container}>
+            <li>
+                <Contact />
+            </li>
+        </ul>
+    );
 };
 
 export default ContactList;
