@@ -1,3 +1,14 @@
 .container {
-    border: 2px solid purple;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 300px;
+    margin: 10px;
+}
+
+.searchText {
+    font-size: 18px;
+}
+
+.searchInput {
+    border-radius: 5px;
 }

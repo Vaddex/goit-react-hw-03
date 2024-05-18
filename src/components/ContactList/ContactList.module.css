@@ -1,3 +1,6 @@
 .container {
-    border: 2px solid orange;
+    display: flex;
+    padding: 10px;
+    list-style: none;
+    flex-wrap: wrap;
 }

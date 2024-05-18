@@ -1,65 +1,79 @@
 import css from './ContactForm.module.css';
-import { Formik, Form, Field } from 'formik';
 import { useId } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { nanoid } from 'nanoid';
 
-// const initalContacts = [
-//     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-//     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-//     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-//     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-// ];
-
-const ContactForm = () => {
+export default function ContactList({ addContact }) {
     const id = useId();
 
-    const FeedbackSchema = Yup.object().shape({
+    const validation = Yup.object().shape({
         name: Yup.string()
-            .min(2, 'Too Short!')
-            .max(10, 'Too Long!')
-            .required('Required!'),
+            .min(3, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
         number: Yup.string()
-            .email('Must be a valid email!')
+            .min(3, 'Too short')
+            .max(12, 'Too long')
             .required('Required'),
     });
-    const handleSubmit = (values, actions) => {
-        console.log(values);
-        actions.resetForm('');
-    };
-    const initialValues = {
+
+    const initialContact = {
         name: '',
         number: '',
     };
 
+    const handleSubmit = (values, actions) => {
+        addContact({
+            id: nanoid(),
+            name: values.name,
+            number: values.number,
+        });
+
+        actions.resetForm();
+    };
+
     return (
-        <div className={css.container}>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={FeedbackSchema}
-                onSubmit={handleSubmit}
-            >
-                <Form>
-                    <div>
-                        <label id={`${id}-name`}>Name</label>
-                        <Field id={`${id}-name`} type="text" name="name" />
-                    </div>
+        <Formik
+            initialValues={initialContact}
+            onSubmit={handleSubmit}
+            validationSchema={validation}
+        >
+            <Form className={css.container}>
+                <div className={css.fieldBox}>
+                    <label htmlFor={`${id}-name`}>Name</label>
+                    <Field
+                        className={css.inputField}
+                        id={`${id}-name`}
+                        type="text"
+                        name="name"
+                    />
+                    <ErrorMessage
+                        className={css.errorMessage}
+                        name="name"
+                        component="span"
+                    />
+                </div>
 
-                    <div>
-                        <label id={`${id}-number`}>
-                            Number
-                            <Field
-                                id={`${id}-number`}
-                                type="phone"
-                                name="number"
-                            />
-                        </label>
-                    </div>
+                <div className={css.fieldBox}>
+                    <label htmlFor={`${id}-number`}>Number</label>
+                    <Field
+                        className={css.inputField}
+                        id={`${id}-number`}
+                        type="tel"
+                        name="number"
+                    />
+                    <ErrorMessage
+                        className={css.errorMessage}
+                        name="number"
+                        component="span"
+                    />
+                </div>
 
-                    <button type="submit">Add contact</button>
-                </Form>
-            </Formik>
-        </div>
+                <button type="submit" className={css.button}>
+                    Add contact
+                </button>
+            </Form>
+        </Formik>
     );
-};
-
-export default ContactForm;
+}

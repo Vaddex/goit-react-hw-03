@@ -3,4 +3,40 @@
     border-radius: 20px;
     height: 260px;
     width: 420px;
+    margin: 20px;
+    padding: 10px;
+}
+
+.contactForm {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.fieldBox {
+    padding: 10px;
+
+    font-weight: 600;
+}
+
+.inputField {
+    display: flex;
+    border-radius: 5px;
+    width: 100%;
+    position: relative;
+}
+
+.errorMessage {
+    color: red;
+    position: relative;
+    margin-bottom: -20px;
+}
+
+.button {
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: #efefef;
+    border-radius: 5px;
+    font-weight: 600;
+    justify-self: end;
 }

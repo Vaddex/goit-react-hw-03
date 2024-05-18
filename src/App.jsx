@@ -1,33 +1,50 @@
 import './App.css';
+import { useState, useEffect } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import SearchBox from './components/SearchBox/SearchBox';
 import ContactList from './components/ContactList/ContactList';
-// import contactsData from '../../../contactsData.json';
-
-// const initalContacts = [
-//     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-//     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-//     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-//     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-// ];
+import contactsData from '../contactsData.json';
 
 function App() {
-    // const [contact, setContact] = useState(contactsData);
+    const [contactsFilter, setFilter] = useState('');
 
-    // const addContact = newContact => {};
+    const [contacts, setContacts] = useState(() => {
+        const storageContact = window.localStorage.getItem('saveContact');
+        return storageContact !== null
+            ? JSON.parse(storageContact)
+            : contactsData;
+    });
+
+    useEffect(() => {
+        window.localStorage.setItem('saveContact', JSON.stringify(contacts));
+    }, [contacts]);
+
+    const onDelete = contactId => {
+        setContacts(prevContacts => {
+            return prevContacts.filter(contact => contact.id !== contactId);
+        });
+    };
+
+    const visibleContacts = contacts.filter(contact =>
+        contact.name.toLowerCase().includes(contactsFilter.toLowerCase())
+    );
+
+    const addContact = newContact => {
+        setContacts(prevContact => {
+            return [...prevContact, newContact];
+        });
+    };
 
     return (
-        <div>
-            <h1>Phonebook</h1>
-            <ContactForm />
-            <SearchBox />
-            <ContactList />
-        </div>
+        <>
+            <div>
+                <h1 className="titleText">Phonebook</h1>
+                <ContactForm addContact={addContact} />
+                <SearchBox value={contactsFilter} onFilter={setFilter} />
+                <ContactList contacts={visibleContacts} onDelete={onDelete} />
+            </div>
+        </>
     );
 }
 
 export default App;
-
-{
-    /* <ContactList contacts={contact} />; */
-}
